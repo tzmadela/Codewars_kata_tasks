@@ -15,8 +15,11 @@ def longest_mountain_pass(mountains, E):
             energy_cost = mountains[end + 1] - mountains[end]
             current_energy -= energy_cost
             end += 1
-        elif mountains[end + 1] <= mountains[end]:
+        else:
             # Going downhill or staying flat
+            # Deduct energy cost for moving downhill or staying at the same height
+            energy_cost = mountains[end + 1] - mountains[end]
+            current_energy -= energy_cost
             end += 1
         
         # Check if we need to adjust the start of the mountain pass
@@ -25,6 +28,10 @@ def longest_mountain_pass(mountains, E):
                 # We are moving from a lower height to a higher height (uphill)
                 energy_cost = mountains[start + 1] - mountains[start]
                 current_energy += energy_cost
+            else:
+                # We are moving downhill or staying at the same height
+                energy_cost = mountains[start + 1] - mountains[start]
+                current_energy -= energy_cost
             start += 1
         
         # Check if we found a longer mountain pass
@@ -38,5 +45,5 @@ def longest_mountain_pass(mountains, E):
     return (max_length, max_start)
 
 # Edge case test
-result = longest_mountain_pass([1, 2, 3], 0)
+result = longest_mountain_pass([1, 2, 3, 4, 5], 0)
 print(result)  # Output: (1, 0) -> Single ascending mountain with zero energy, start at index 0
